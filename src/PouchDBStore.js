@@ -3,19 +3,24 @@ class PouchDBStore {
     this.collection = null
   }
 
-  create (id, doc) {
-    return this.collection.upsert(id, () => doc).then(() => doc)
+  async delete (id) {
+    try {
+      await this.collection.remove(id)
+    } catch (e) {
+      throw e
+    }
   }
 
-  async get (key) {
+  async get (key, field) {
     try {
-      return await this.collection.get(key)
+      const value = await this.collection.get(key)
+      return field ? value[field] : value
     } catch (e) {
       return null
     }
   }
 
-  async update (id, doc) {
+  async set (id, doc) {
     let nextDoc
     return this.collection.upsert(id, (currentDoc) => {
       nextDoc = Object.assign({}, currentDoc, doc)
