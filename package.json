@@ -1,6 +1,6 @@
 {
   "name": "airgram-js-example",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Basic usage of Airgram with JavaScript",
   "homepage": "https://airgram.io",
   "main": "src/index.js",
