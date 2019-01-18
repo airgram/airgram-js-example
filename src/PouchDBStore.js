@@ -7,6 +7,9 @@ class PouchDBStore {
     try {
       await this.collection.remove(id)
     } catch (e) {
+      if (e.status === 404) {
+        return null
+      }
       throw e
     }
   }

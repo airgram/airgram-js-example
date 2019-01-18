@@ -32,6 +32,7 @@ airgram.bind(TYPES.MtpStateStore).to(PouchDBStore).onActivation(mountCollection)
 airgram.use(airgram.auth)
 
 airgram.auth.use(new AuthDialog({
+  samePhoneNumber: () => false,
   phoneNumber: () => process.env.PHONE_NUMBER || prompt(`Please enter your phone number:\n`),
   code: () => prompt(`Please enter the secret code:\n`)
 }))
@@ -46,17 +47,18 @@ airgram.updates.use(({update}, next) => {
 airgram.updates.startPolling().then(() => {
   console.log('Long polling started')
 }).catch((error) => {
+  console.error('Long polling error')
   console.error(error)
 })
-
-// Get dialogs list
-airgram.client.messages.getDialogs({
-  limit: 30,
-  offset_date: 0,
-  offset_id: 0,
-  offset_peer: {_: 'inputPeerEmpty'}
-}).then((dialogs) => {
-  console.info(dialogs)
-}).catch((error) => {
-  console.error(error)
-})
+//
+// // Get dialogs list
+// airgram.client.messages.getDialogs({
+//   limit: 30,
+//   offset_date: 0,
+//   offset_id: 0,
+//   offset_peer: {_: 'inputPeerEmpty'}
+// }).then((dialogs) => {
+//   console.info(dialogs)
+// }).catch((error) => {
+//   console.error(error)
+// })
