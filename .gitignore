@@ -100,4 +100,4 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-data/*
+data/airgram
