@@ -44,21 +44,18 @@ airgram.updates.use(({update}, next) => {
   console.log(`"${update._}" ${JSON.stringify(update)}`)
   return next()
 })
-airgram.updates.startPolling().then(() => {
-  console.log('Long polling started')
-}).catch((error) => {
-  console.error('Long polling error')
-  console.error(error)
+
+airgram.auth.login().then(async () => {
+  // Start long polling
+  await airgram.updates.startPolling()
+
+  // Get dialogs list
+  const dialogs = await airgram.client.messages.getDialogs({
+    limit: 30,
+    offset_date: 0,
+    offset_id: 0,
+    offset_peer: {_: 'inputPeerEmpty'}
+  })
+
+  console.log(dialogs)
 })
-//
-// // Get dialogs list
-// airgram.client.messages.getDialogs({
-//   limit: 30,
-//   offset_date: 0,
-//   offset_id: 0,
-//   offset_peer: {_: 'inputPeerEmpty'}
-// }).then((dialogs) => {
-//   console.info(dialogs)
-// }).catch((error) => {
-//   console.error(error)
-// })
