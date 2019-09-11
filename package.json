@@ -1,6 +1,6 @@
 {
   "name": "airgram-js-example",
-  "version": "0.1.4",
+  "version": "0.0.0",
   "description": "Basic usage of Airgram with JavaScript",
   "homepage": "https://airgram.io",
   "main": "src/index.js",
@@ -8,10 +8,9 @@
     "airgram",
     "telegram",
     "telegram client",
-    "mtproto"
+    "tdlib"
   ],
   "scripts": {
-    "deploy": "np --yolo",
     "dev": "DEBUG=airgram* dotenv -e .env nodemon --config nodemon.json",
     "lint": "eslint src",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -20,20 +19,18 @@
   "license": "GPL-3.0",
   "repository": "https://github.com/airgram/airgram-js-example",
   "dependencies": {
-    "airgram": "^0.1.13",
-    "airgram-debug": "^0.1.4",
-    "inversify": "^4.13.0",
-    "pouchdb": "^7.0.0",
-    "pouchdb-upsert": "^2.2.0",
-    "reflect-metadata": "^0.1.13"
+    "airgram": "^2.0.0-next.2"
   },
   "devDependencies": {
-    "dotenv-cli": "^1.4.0",
-    "eslint": "^5.12.0",
-    "eslint-config-standart": "^0.2.0",
-    "eslint-plugin-promise": "^4.0.1",
-    "eslint-plugin-standard": "^4.0.0",
     "nodemon": "^1.18.9",
-    "np": "^3.1.0"
-  }
+    "dotenv-cli": "^1.4.0",
+    "eslint": "^6.3.0",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-friendly-formatter": "^4.0.1",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-node": "^10.0.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1"
+  },
+  "private": true
 }

@@ -1,61 +1,39 @@
-require('reflect-metadata')
+const { Airgram, Auth, prompt, toObject } = require('airgram')
 
-const inversify = require('inversify')
-const {Airgram, AuthDialog, TYPES} = require('airgram')
-const {prompt, getCalleeName} = require('airgram/helpers')
-const {DebugLogger} = require('airgram-debug')
-const {createCollection} = require('./pouchdb')
-const PouchDBStore = require('./PouchDBStore')
-
-const airgram = new Airgram({id: process.env.APP_ID, hash: process.env.APP_HASH})
-
-// Logger
-airgram.bind(TYPES.Logger).to(DebugLogger).onActivation((context, logger) => {
-  logger.namespace = [getCalleeName(context)]
-  logger.level = 'verbose'
-  return logger
+const airgram = new Airgram({
+  apiId: process.env.APP_ID,
+  apiHash: process.env.APP_HASH,
+  command: process.env.TDLIB_COMMAND,
+  logVerbosityLevel: 2
 })
 
-// Mount PouchDB store
-const collection = createCollection('airgram')
-
-function mountCollection (context, store) {
-  store.collection = collection
-  return store
-}
-
-inversify.decorate(inversify.injectable(), PouchDBStore)
-airgram.bind(TYPES.AuthStore).to(PouchDBStore).onActivation(mountCollection)
-airgram.bind(TYPES.MtpStateStore).to(PouchDBStore).onActivation(mountCollection)
-
-// Authorization
-airgram.use(airgram.auth)
-
-airgram.auth.use(new AuthDialog({
-  samePhoneNumber: () => false,
-  phoneNumber: () => process.env.PHONE_NUMBER || prompt(`Please enter your phone number:\n`),
-  code: () => prompt(`Please enter the secret code:\n`)
+airgram.use(new Auth({
+  code: () => prompt('Please enter the secret code:\n'),
+  phoneNumber: () => prompt('Please enter your phone number:\n')
 }))
 
-// Updates
-airgram.use(airgram.updates)
+void (async function () {
+  const me = toObject(await airgram.api.getMe())
+  console.log('[Me] ', me)
 
-airgram.updates.use(({update}, next) => {
-  console.log(`"${update._}" ${JSON.stringify(update)}`)
+  const { response: chats } = await airgram.api.getChats({
+    limit: 10,
+    offsetChatId: 0,
+    offsetOrder: '9223372036854775807'
+  })
+  console.log('[My chats] ', chats)
+})()
+
+// Getting all updates
+airgram.use((ctx, next) => {
+  if ('update' in ctx) {
+    console.log(`[all updates][${ctx._}]`, JSON.stringify(ctx.update))
+  }
   return next()
 })
 
-airgram.auth.login().then(async () => {
-  // Start long polling
-  await airgram.updates.startPolling()
-
-  // Get dialogs list
-  const dialogs = await airgram.client.messages.getDialogs({
-    limit: 30,
-    offset_date: 0,
-    offset_id: 0,
-    offset_peer: {_: 'inputPeerEmpty'}
-  })
-
-  console.log(dialogs)
+// Getting new messages
+airgram.on('updateNewMessage', async ({ update }) => {
+  const { message } = update
+  console.log('[new message]', message)
 })

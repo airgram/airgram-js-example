@@ -100,4 +100,6 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-data/airgram
+# Project
+tdlib
+db

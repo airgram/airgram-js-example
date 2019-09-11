@@ -13,7 +13,9 @@ $ git clone https://github.com/airgram/airgram-js-example.git
 $ cd airgram-js-example
 $ npm i
 ```
-3. Run example:
+3. Open `.env` and edit config, if it's necessary.
+
+4. Run example:
 ```bash
 npm run dev
 ```
