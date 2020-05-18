@@ -19,7 +19,7 @@
   "license": "GPL-3.0",
   "repository": "https://github.com/airgram/airgram-js-example",
   "dependencies": {
-    "airgram": "^2.0.0-next.2"
+    "airgram": "^3.0.2"
   },
   "devDependencies": {
     "nodemon": "^1.18.9",

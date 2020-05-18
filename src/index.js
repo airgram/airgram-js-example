@@ -4,7 +4,7 @@ const airgram = new Airgram({
   apiId: process.env.APP_ID,
   apiHash: process.env.APP_HASH,
   command: process.env.TDLIB_COMMAND,
-  logVerbosityLevel: 2
+  logVerbosityLevel: 1
 })
 
 airgram.use(new Auth({
@@ -27,7 +27,7 @@ void (async function () {
 // Getting all updates
 airgram.use((ctx, next) => {
   if ('update' in ctx) {
-    console.log(`[all updates][${ctx._}]`, JSON.stringify(ctx.update))
+    // console.log(`[all updates][${ctx._}]`, JSON.stringify(ctx.update))
   }
   return next()
 })
